@@ -8,28 +8,30 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent == null) {
+        if (context == null || intent == null) {
             return;
         }
 
         String action = intent.getAction();
 
-        if (Intent.ACTION_BOOT_COMPLETED.equals(action)
-                || Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
+        if (!Intent.ACTION_BOOT_COMPLETED.equals(action)
+                && !Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
+            return;
+        }
 
-            Intent launchIntent =
-                    new Intent(context, MainActivity.class);
+        Intent launchIntent = new Intent(context, MainActivity.class);
+        launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            launchIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-            try {
-                context.startActivity(launchIntent);
-            } catch (Exception ignored) {
-                // Some Android boxes require the app to be selected
-                // as the default Home application.
-            }
+        try {
+            context.startActivity(launchIntent);
+        } catch (Exception ignored) {
+            /*
+             * Android 15 or the TV-box firmware may block background
+             * activity launching. Selecting this app as the default
+             * Home app provides the more reliable startup method.
+             */
         }
     }
 }
