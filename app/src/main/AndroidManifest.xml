@@ -30,11 +30,13 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape">
 
+            <!-- Normal app icon -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!-- Home app configuration -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
