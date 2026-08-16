@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Final Signage Player</title>
+  <style>
+    html,body{margin:0;width:100%;height:100%;background:#000;color:white;font-family:Arial,sans-serif;overflow:hidden}.hidden{display:none!important}.screen{height:100vh;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:radial-gradient(circle at top left,#2563eb,#020617 62%);padding:28px;box-sizing:border-box}h1{font-size:46px;margin:0 0 16px}input,button{font-size:24px;padding:15px;margin:10px;border-radius:14px;border:0;width:72%;max-width:760px;box-sizing:border-box}input{color:#111827;background:#fff}button{background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff;font-weight:bold;cursor:pointer}.secondary{background:#475569}.code{font-size:92px;color:#facc15;font-weight:900;letter-spacing:8px;margin:20px 0}.small,.err{font-size:22px;max-width:980px;line-height:1.45;white-space:pre-line}.small{color:#cbd5e1}.err{color:#fecaca}#stage{width:100vw;height:100vh;background:#000;overflow:hidden}#stage img,#stage video{width:100vw;height:100vh;object-fit:contain;background:#000}.ad-item{animation-duration:.75s;animation-fill-mode:both;will-change:opacity,transform,filter}.fx-fade{animation-name:fadeIn}.fx-zoom{animation-name:zoomIn}.fx-slide-left{animation-name:slideLeft}.fx-slide-right{animation-name:slideRight}.fx-slide-up{animation-name:slideUp}.fx-slide-down{animation-name:slideDown}.fx-soft-blur{animation-name:softBlur}.fx-soft-rotate{animation-name:softRotate}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes zoomIn{from{opacity:0;transform:scale(1.06)}to{opacity:1;transform:scale(1)}}@keyframes slideLeft{from{opacity:0;transform:translateX(55px)}to{opacity:1;transform:translateX(0)}}@keyframes slideRight{from{opacity:0;transform:translateX(-55px)}to{opacity:1;transform:translateX(0)}}@keyframes slideUp{from{opacity:0;transform:translateY(45px)}to{opacity:1;transform:translateY(0)}}@keyframes slideDown{from{opacity:0;transform:translateY(-45px)}to{opacity:1;transform:translateY(0)}}@keyframes softBlur{from{opacity:0;filter:blur(10px);transform:scale(1.03)}to{opacity:1;filter:blur(0);transform:scale(1)}}@keyframes softRotate{from{opacity:0;transform:scale(1.04) rotate(.8deg)}to{opacity:1;transform:scale(1) rotate(0)}}#overlay{position:fixed;right:8px;bottom:6px;z-index:99999;background:rgba(0,0,0,.55);font-size:10px;color:white;padding:4px 6px;border-radius:6px;max-width:320px;display:none;pointer-events:none;white-space:pre-line}
+  </style>
+</head>
+<body>
+  <div id="setup" class="screen">
+    <h1>Final Signage Player</h1>
+    <p class="small">Enter server URL and connect.</p>
+    <input id="serverUrl" placeholder="Example: http://192.168.1.10:3000" />
+    <button id="connectBtn" type="button">Connect</button>
+    <button id="resetBtn" type="button" class="secondary">Reset Server</button>
+    <p id="setupHint" class="small"></p>
+  </div>
+  <div id="waiting" class="screen hidden">
+    <h1>Device Registration</h1>
+    <p class="small">Enter this code in CMS dashboard.</p>
+    <div id="code" class="code">------</div>
+    <p id="serverInfo" class="small"></p>
+    <button id="changeServerBtn" type="button" class="secondary">Change Server URL</button>
+  </div>
+  <div id="errorBox" class="screen hidden">
+    <h1>Connection Problem</h1>
+    <p id="errorText" class="err"></p>
+    <button id="retryBtn" type="button">Retry</button>
+    <button id="errorChangeServerBtn" type="button" class="secondary">Change Server URL</button>
+  </div>
+  <div id="stage" class="hidden"></div>
+  <div id="overlay"></div>
+  <script src="player.js"></script>
+</body>
+</html>

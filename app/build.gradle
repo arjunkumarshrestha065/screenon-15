@@ -1,0 +1,14 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.arjun.signage'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.arjun.signage.player'
+        minSdk 23
+        targetSdk 35
+        versionCode 10
+        versionName '10.0-final-workable'
+    }
+}
