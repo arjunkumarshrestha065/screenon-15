@@ -22,7 +22,10 @@ class SignageStorageDownloader(
             conn.connectTimeout = 15000
             conn.readTimeout = 120000
 
-            if (conn.responseCode != 200) return false
+            if (conn.responseCode != 200) {
+                storageManager.deleteFile(fileName)
+                return false
+            }
 
             context.contentResolver.openOutputStream(targetUri)?.use { output ->
                 BufferedInputStream(conn.inputStream).use { input ->
@@ -31,6 +34,7 @@ class SignageStorageDownloader(
                         val read = input.read(buffer)
                         if (read == -1) break
 
+                        // Abort if USB was unplugged mid-download
                         if (!storageManager.isStorageReady()) {
                             return false
                         }
@@ -49,7 +53,8 @@ class SignageStorageDownloader(
     }
 
     private fun guessMimeType(fileName: String): String {
-        val ext = fileName.substringAfterLast('.', '').lowercase()
+        // Fixed: Use "" (double quotes) instead of '' (single quotes)
+        val ext = fileName.substringAfterLast('.', "").lowercase()
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext) ?: "application/octet-stream"
     }
 }
