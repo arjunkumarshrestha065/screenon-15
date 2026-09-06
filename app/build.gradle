@@ -1,14 +1,56 @@
-plugins { id 'com.android.application' }
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
 
 android {
-    namespace 'com.arjun.signage'
-    compileSdk 35
+    // CRITICAL: This exact namespace is what resolves 'R' in your Kotlin files
+    namespace 'com.example.signageplayer'
+    compileSdk 34
 
     defaultConfig {
-        applicationId 'com.arjun.signage.player'
-        minSdk 23
-        targetSdk 35
-        versionCode 10
-        versionName '10.0-final-workable'
+        applicationId "com.example.signageplayer"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+    // Core Android & Kotlin libraries
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // Coroutines (often used for background downloading in SignageStorageDownloader)
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0'
+
+    // OkHttp (standard HTTP client for file downloads / API calls)
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
