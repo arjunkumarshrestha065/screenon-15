@@ -1,5 +1,8 @@
 package com.arjun.sinagelauncher
 
+// Explicit import to guarantee R resolves cleanly
+import com.arjun.sinagelauncher.R
+
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.role.RoleManager
@@ -41,23 +44,24 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 1. Keep display constantly ON (Signage screen won't sleep)
+        // 1. Keep display constantly ON (screen will not sleep)
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
+        // 2. Set layout
         setContentView(R.layout.activity_main)
 
-        // 2. Bind layout views
+        // 3. Bind views
         webView = findViewById(R.id.webView)
         storagePanel = findViewById(R.id.storagePanel)
         storageStatusText = findViewById(R.id.storageStatusText)
         selectStorageButton = findViewById(R.id.selectStorageButton)
 
-        // 3. Initialize storage and downloader
+        // 4. Initialize storage & downloader helpers
         storageManager = RemovableStorageManager(this)
         downloader = SignageStorageDownloader(this, storageManager)
         bridge = AndroidBridge(storageManager, downloader)
 
-        // 4. Setup WebView and Storage Picker
+        // 5. Setup WebView and Storage Picker
         setupWebView()
 
         selectStorageButton.setOnClickListener {
@@ -65,7 +69,7 @@ class MainActivity : Activity() {
             startActivityForResult(intent, REQUEST_SELECT_STORAGE)
         }
 
-        // 5. Prompt user to set as Default Home App (Android 10+)
+        // 6. Prompt user to set as Default Home App (Android 10+)
         promptSetDefaultHomeLauncher()
 
         updateStorageStatus()
@@ -130,30 +134,4 @@ class MainActivity : Activity() {
                 !roleManager.isRoleHeld(RoleManager.ROLE_HOME)
             ) {
                 val intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_HOME)
-                startActivityForResult(intent, REQUEST_CODE_ROLE_HOME)
-            }
-        } else {
-            val intent = Intent(Settings.ACTION_HOME_SETTINGS)
-            startActivity(intent)
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun enableFullScreen() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.let { controller ->
-                controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
-                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
-        } else {
-            window.decorView.systemUiVisibility = (
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                or View.SYSTEM_UI_FLAG_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            )
-        }
-    }
-}
+                startActivityForResult(intent, REQUEST_CODE_ROLE_HOME
