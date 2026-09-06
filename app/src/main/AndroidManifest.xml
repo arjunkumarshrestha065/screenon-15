@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Network permissions for downloading media / streaming -->
+    <!-- Network permissions for streaming and downloading media -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!-- Boot permission to detect restart -->
+    <!-- Boot permission for auto-starting on device power on -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <!-- MANDATORY FOR ANDROID 10+: Allows starting Activity from background -->
+    <!-- Required on Android 10+ to launch activity from the background -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-    <!-- Keeps the signage screen from going to sleep / turning off -->
+    <!-- Prevents TV/screen from sleeping or turning black -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Ensures app can be installed on Android TV / TV Boxes without touchscreens -->
+    <!-- Compatibility flags for Android TV / TV Boxes without touchscreens -->
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -24,14 +24,14 @@
 
     <application
         android:allowBackup="false"
-        android:label="Signage Player"
+        android:label="Signage Launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
         android:usesCleartextTraffic="true">
 
-        <!-- Boot Receiver for Auto Launch -->
+        <!-- 1. Auto-Launch Boot Receiver -->
         <receiver
-            android:name=".BootReceiver"
+            android:name="com.arjun.sinagelauncher.BootReceiver"
             android:enabled="true"
             android:exported="true"
             android:directBootAware="true">
@@ -44,28 +44,28 @@
             </intent-filter>
         </receiver>
 
-        <!-- Main Signage Activity -->
+        <!-- 2. Main Full-Screen Signage Activity -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.arjun.sinagelauncher.MainActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="landscape"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden">
 
-            <!-- Standard App Drawer Launcher -->
+            <!-- Standard Phone/Tablet App Drawer -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Android TV / Leanback Launcher -->
+            <!-- Android TV Home Drawer -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
 
-            <!-- Kiosk / Dedicated Home App Launcher -->
+            <!-- Custom Home Launcher (Replaces Android Desktop on Boot) -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.HOME" />
